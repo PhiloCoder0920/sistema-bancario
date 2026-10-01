@@ -14,13 +14,14 @@ Pacote `atividade6e12e15` (em `src/atividade6e12e15/`):
 - `seguroDeVida` – implementa `tributavel` (imposto fixo de R$ 42,00)
 - `tributavel` (interface) – `getValorImposto() : double`
 - `calculadorImposto` – `registra(tributavel)` soma os impostos; `getTotalImposto()` retorna o total arrecadado
-- `TesteBanco` – teste da Parte 2
-- `testeParte3` – teste da Parte 3: exercita todas as classes e todos os métodos, imprime os saldos das contas correntes, os seguros de vida e o total de impostos arrecadado
+- `Testes` – imprime os saldos das contas correntes, os seguros de vida definidos e o total de impostos arrecadado
+- `testeParte3` – testa todas as classes e todos os métodos
 
 ## Como executar
 
 ```bash
 javac -encoding UTF-8 -d out src/atividade6e12e15/*.java
+java -cp out atividade6e12e15.Testes
 java -cp out atividade6e12e15.testeParte3
 ```
 
