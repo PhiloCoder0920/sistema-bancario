@@ -6,7 +6,9 @@ Conceitos trabalhados: Polimorfismo, Override, Classes Abstratas e Interfaces.
 
 ## Estrutura
 
-Pacote `atividade6e12e15` (em `src/atividade6e12e15/`):
+Pacote `atividade6e12e15` (em `src/atividade6e12e15/`).
+
+O arquivo `sistemaBancario.java` reúne todas as classes do sistema (sem `public` na declaração, pois um arquivo Java só pode ter uma classe pública):
 
 - `conta` (abstrata) – classe mãe das contas: `depositar` (abstrato), `sacar`, `transferir`, `consultar`, `getSaldo`, `getQuantidadeDeContas`
 - `contaCorrente` – herda `conta` e implementa `tributavel` (saque com taxa de R$ 0,20; imposto de 1% do saldo)
@@ -14,6 +16,9 @@ Pacote `atividade6e12e15` (em `src/atividade6e12e15/`):
 - `seguroDeVida` – implementa `tributavel` (imposto fixo de R$ 42,00)
 - `tributavel` (interface) – `getValorImposto() : double`
 - `calculadorImposto` – `registra(tributavel)` soma os impostos; `getTotalImposto()` retorna o total arrecadado
+
+Classes de teste (cada uma em seu próprio arquivo):
+
 - `Testes` – imprime os saldos das contas correntes, os seguros de vida definidos e o total de impostos arrecadado
 - `testeParte3` – testa todas as classes e todos os métodos
 
