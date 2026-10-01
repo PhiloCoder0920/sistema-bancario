@@ -1,13 +1,9 @@
 package atividade6e12e15;
 
-// ==================== tributavel ====================
-
 interface tributavel {
     
     double getValorImposto();
 }
-
-// ==================== conta ====================
 
 abstract class conta {
     private int agencia;
@@ -63,8 +59,6 @@ abstract class conta {
     }
 }
 
-// ==================== contaCorrente ====================
-
 class contaCorrente extends conta implements tributavel {
 
     public contaCorrente(int agencia, int numero, String titular) {
@@ -92,8 +86,6 @@ class contaCorrente extends conta implements tributavel {
     }
 }
 
-// ==================== contaPoupanca ====================
-
 class contaPoupanca extends conta {
 
     public contaPoupanca(int agencia, int numero, String titular) {
@@ -110,8 +102,6 @@ class contaPoupanca extends conta {
     }
 }
 
-// ==================== seguroDeVida ====================
-
 class seguroDeVida implements tributavel {
 
     @Override
@@ -119,8 +109,6 @@ class seguroDeVida implements tributavel {
         return 42.00;
     }
 }
-
-// ==================== calculadorImposto ====================
 
 class calculadorImposto {
     
