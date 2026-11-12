@@ -15,6 +15,9 @@ abstract class conta {
     
     private static int quantidadeDeContas = 0;
 
+    public static final double LIMITE_SAQUE = 300.00;
+    public static final double VALOR_CEDULA = 20.00;
+
     public conta(int agencia, int numero, String titular, String tipo) {
         this.agencia = agencia;
         this.numero = numero;
@@ -26,20 +29,32 @@ abstract class conta {
 
     public abstract boolean depositar(double valor);
 
-    public boolean sacar(double valor) {
-        if (valor > 0 && this.saldo >= valor) {
-            this.saldo -= valor;
-            return true;
-        }
-        return false;
+    protected double getTaxaSaque() {
+        return 0.0;
     }
 
-    public boolean transferir(double valor, conta destino) {
-        if (this.sacar(valor)) {
-            destino.depositar(valor);
-            return true;
+    public void sacar(double valor)
+            throws saldoInsuficienteException, limiteDeSaqueExcedidoException, valorNaoMultiploDe20Exception {
+        if (valor <= 0) {
+            throw new IllegalArgumentException("Valor do saque deve ser maior que zero");
         }
-        return false;
+        if (valor > LIMITE_SAQUE) {
+            throw new limiteDeSaqueExcedidoException(valor, LIMITE_SAQUE);
+        }
+        if (valor % VALOR_CEDULA != 0) {
+            throw new valorNaoMultiploDe20Exception(valor);
+        }
+        double valorTotal = valor + this.getTaxaSaque();
+        if (this.saldo < valorTotal) {
+            throw new saldoInsuficienteException(this.saldo, valorTotal);
+        }
+        this.saldo -= valorTotal;
+    }
+
+    public void transferir(double valor, conta destino)
+            throws saldoInsuficienteException, limiteDeSaqueExcedidoException, valorNaoMultiploDe20Exception {
+        this.sacar(valor);
+        destino.depositar(valor);
     }
 
     public String consultar() {
@@ -56,6 +71,10 @@ abstract class conta {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    public String getTipo() {
+        return tipo;
     }
 }
 
@@ -75,9 +94,8 @@ class contaCorrente extends conta implements tributavel {
     }
 
     @Override
-    public boolean sacar(double valor) {
-        double valorComTaxa = valor + 0.20;
-        return super.sacar(valorComTaxa);
+    protected double getTaxaSaque() {
+        return 0.20;
     }
 
     @Override
@@ -121,5 +139,32 @@ class calculadorImposto {
 
     public double getTotalImposto() {
         return this.totalImposto;
+    }
+}
+
+class saldoInsuficienteException extends Exception {
+
+    private static final long serialVersionUID = 1L;
+
+    public saldoInsuficienteException(double saldo, double valorNecessario) {
+        super(String.format("Saldo insuficiente: saldo de R$ %.2f, necessário R$ %.2f", saldo, valorNecessario));
+    }
+}
+
+class limiteDeSaqueExcedidoException extends Exception {
+
+    private static final long serialVersionUID = 1L;
+
+    public limiteDeSaqueExcedidoException(double valor, double limite) {
+        super(String.format("Valor de saque (R$ %.2f) superior ao limite máximo de R$ %.2f", valor, limite));
+    }
+}
+
+class valorNaoMultiploDe20Exception extends Exception {
+
+    private static final long serialVersionUID = 1L;
+
+    public valorNaoMultiploDe20Exception(double valor) {
+        super(String.format("Valor do saque (R$ %.2f) não pode ser composto por cédulas de R$ 20,00", valor));
     }
 }
